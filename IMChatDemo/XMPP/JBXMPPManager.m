@@ -80,7 +80,7 @@ static JBXMPPManager *_instance;
         _xmppMuc = [[XMPPMUC alloc]init];
         [_xmppMuc addDelegate:self delegateQueue:dispatch_get_main_queue()];
         [_xmppMuc activate:self.xmppStream];
-        
+        _xmppRooms = [NSMutableDictionary dictionary];
         
         
                 
@@ -91,16 +91,32 @@ static JBXMPPManager *_instance;
 
 #pragma mark --join Group Chat
 
-- (void)joinGroupChatWithRoomJid:(NSString *)jid {
-    XMPPJID *roomJid = [XMPPJID jidWithString:jid];
-    //接入聊天模块
-    self.xmppRoomMemoryStorage = [[XMPPRoomMemoryStorage alloc]init];
-    self.xmppRoom = [[XMPPRoom alloc]initWithRoomStorage:self.xmppRoomMemoryStorage jid:roomJid];
-    [self.xmppRoom addDelegate:self delegateQueue:dispatch_get_main_queue()];
-    [self.xmppRoom activate:self.xmppStream];
-    [self.xmppRoom joinRoomUsingNickname:self.xmppStream.myJID.user history:nil];
+- (void)joinGroupChatWithRoomJid:(NSArray *)jids {
     
-    [[NSUserDefaults standardUserDefaults] setObject:self.xmppRoom.myRoomJID.full forKey:MY_ROOM_ID];
+    for (NSString *jid in jids) {
+        
+        XMPPJID *roomJid = [XMPPJID jidWithString:jid];
+        //接入聊天模块
+        XMPPRoomMemoryStorage *roomStorage = [[XMPPRoomMemoryStorage alloc]init];
+        XMPPRoom *room = [[XMPPRoom alloc]initWithRoomStorage:roomStorage jid:roomJid];
+        [room addDelegate:self delegateQueue:dispatch_get_main_queue()];
+        [room activate:self.xmppStream];
+        [room joinRoomUsingNickname:self.xmppStream.myJID.user history:nil];
+        [self.xmppRooms setObject:room forKey:jid];
+
+    }
+    
+}
+
+- (XMPPRoom *)getRoomWithRoomJid:(NSString *)roomJid{
+    
+    return [self.xmppRooms objectForKey:roomJid];
+}
+
+- (void)setCurrentChattingRoomId:(NSString *)roomJid {
+    
+    XMPPRoom *currentRoom = [self.xmppRooms objectForKey:roomJid];
+    [[NSUserDefaults standardUserDefaults] setObject:currentRoom.myRoomJID.full forKey:CHATTING_ROOM_ID];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -218,11 +234,11 @@ static JBXMPPManager *_instance;
 }
 - (void)xmppRoomDidLeave:(XMPPRoom *)sender {
     NSLog(@"user has left room");
-    [self.xmppRoom removeDelegate:self delegateQueue:dispatch_get_main_queue()];
-    [self.xmppRoom deactivate];
-    [self.xmppRoom destroyRoom];
-    self.xmppRoom = nil;
-    self.xmppRoomMemoryStorage = nil;
+//    [self.xmppRoom removeDelegate:self delegateQueue:dispatch_get_main_queue()];
+//    [self.xmppRoom deactivate];
+//    [self.xmppRoom destroyRoom];
+//    self.xmppRoom = nil;
+//    self.xmppRoomMemoryStorage = nil;
 }
 
 
@@ -257,6 +273,7 @@ static JBXMPPManager *_instance;
     }
     NSDictionary *dic = @{@"roomNames":roomArray};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"GroupListChaged" object:self userInfo:dic];
+    [self joinGroupChatWithRoomJid:roomArray];
 }
 #pragma mark ===== 文件接收=======
 

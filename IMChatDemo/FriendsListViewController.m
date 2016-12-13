@@ -35,7 +35,7 @@
     //获取服务器好友列表
     [[[JBXMPPManager sharedInstance] xmppRoster] fetchRoster];
     
-    //获取服务器聊天室列表
+    //发现聊天室如果有聊天室并加入聊天室
     [[[JBXMPPManager sharedInstance] xmppMuc] discoverServices];
     
     self.dataSource = [NSMutableArray arrayWithCapacity:2];

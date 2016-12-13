@@ -44,8 +44,8 @@
 @property (nonatomic, strong) XMPPRosterMemoryStorage *xmppRosterMemoryStorage;
 
 @property (nonatomic, strong) XMPPMUC *xmppMuc;
-@property (nonatomic, strong) XMPPRoom *xmppRoom;
-@property (nonatomic, strong) XMPPRoomMemoryStorage *xmppRoomMemoryStorage;
+@property (nonatomic, strong) NSMutableDictionary *xmppRooms;
+//@property (nonatomic, strong) XMPPRoomMemoryStorage *xmppRoomMemoryStorage;
 
 @property (nonatomic, strong) XMPPMessageArchiving *xmppMessageArchiving;
 @property (nonatomic, strong) XMPPMessageArchivingCoreDataStorage *xmppMessageArchivingCoreDataStorage;
@@ -83,6 +83,10 @@
  */
 - (void)sendMessage:(NSString *)message to:(XMPPJID *)jid;
 
-- (void)joinGroupChatWithRoomJid:(NSString *)jid;
+- (void)joinGroupChatWithRoomJid:(NSArray *)jids;
+
+- (void)setCurrentChattingRoomId:(NSString *)roomJid;
+
+- (XMPPRoom *)getRoomWithRoomJid:(NSString *)roomJid;
 
 @end

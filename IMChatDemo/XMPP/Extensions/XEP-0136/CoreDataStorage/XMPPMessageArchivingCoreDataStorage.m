@@ -336,7 +336,7 @@ static XMPPMessageArchivingCoreDataStorage *sharedInstance;
 - (void)archiveMessage:(XMPPMessage *)message outgoing:(BOOL)isOutgoing xmppStream:(XMPPStream *)xmppStream
 {
 	//YWSawyer自定义：如果收到来自自己发送的群消息就忽略
-    NSString *myRoomID = [[NSUserDefaults standardUserDefaults] stringForKey:MY_ROOM_ID];
+    NSString *myRoomID = [[NSUserDefaults standardUserDefaults] stringForKey:CHATTING_ROOM_ID];
     if ([message.type isEqualToString:@"groupchat"]&&[message.from.full isEqualToString:myRoomID]) {
         return;
     }

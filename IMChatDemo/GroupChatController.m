@@ -33,7 +33,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[JBXMPPManager sharedInstance] joinGroupChatWithRoomJid:self.roomID];
+    [[JBXMPPManager sharedInstance] setCurrentChattingRoomId:self.roomID];
     self.chatTableView = [[UITableView alloc]init];
     self.chatTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.chatTableView.dataSource = self;
@@ -86,7 +86,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[JBXMPPManager sharedInstance].xmppRoom leaveRoom];
+//    [[JBXMPPManager sharedInstance].xmppRoom leaveRoom];
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
@@ -218,7 +218,7 @@
 #pragma mark - InputFunctionViewDelegate
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message
 {
-    [[[JBXMPPManager sharedInstance] xmppRoom] sendMessageWithBody:message];
+    [[[JBXMPPManager sharedInstance] getRoomWithRoomJid:self.roomID] sendMessageWithBody:message];
     funcView.TextViewInput.text = @"";
 }
 
@@ -229,7 +229,7 @@
     XMPPMessage* message = [[XMPPMessage alloc] init];
     [message addBody:encodeData];
     [message addSubject:@"picture"];
-    [[JBXMPPManager sharedInstance].xmppRoom sendMessage:message];
+    [[[JBXMPPManager sharedInstance] getRoomWithRoomJid:self.roomID] sendMessage:message];
 }
 
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendVoice:(NSData *)voice time:(NSInteger)second
@@ -239,7 +239,7 @@
     [message addBody:encodeData];
     [message addSubject:@"voice"];
     [message addAttributeWithName:@"VoiceLength" unsignedIntegerValue:second];
-    [[JBXMPPManager sharedInstance].xmppRoom sendMessage:message];
+    [[[JBXMPPManager sharedInstance] getRoomWithRoomJid:self.roomID] sendMessage:message];
     
 }
 

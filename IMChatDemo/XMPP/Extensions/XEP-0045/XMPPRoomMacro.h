@@ -9,6 +9,6 @@
 #ifndef XMPPRoomMacro_h
 #define XMPPRoomMacro_h
 
-#define MY_ROOM_ID           @"myRoomId"
+#define CHATTING_ROOM_ID           @"myRoomId"
 
 #endif /* XMPPRoomMacro_h */
