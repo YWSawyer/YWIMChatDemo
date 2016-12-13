@@ -83,7 +83,7 @@
             </objects>
             <point key="canvasLocation" x="587" y="-248"/>
         </scene>
-        <!--好友列表-->
+        <!--聊天-->
         <scene sceneID="IjL-2c-4DQ">
             <objects>
                 <tableViewController id="IsO-e7-TUk" customClass="FriendsListViewController" sceneMemberID="viewController">
@@ -122,7 +122,16 @@
                             <outlet property="delegate" destination="IsO-e7-TUk" id="QVa-ei-ZUb"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="好友列表" id="3By-a8-CRu"/>
+                    <navigationItem key="navigationItem" title="聊天" id="ROB-qJ-TvP">
+                        <barButtonItem key="rightBarButtonItem" title="LogOut" id="kO3-vO-sjs">
+                            <connections>
+                                <action selector="logOut:" destination="IsO-e7-TUk" id="MdJ-0q-rBc"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="tgj-Ve-QAo" kind="presentation" identifier="Login" id="iZN-Eq-V6L"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="okT-ix-bwj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

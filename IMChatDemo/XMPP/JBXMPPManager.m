@@ -145,6 +145,7 @@ static JBXMPPManager *_instance;
 {
     [self goOffline];
     [_xmppStream disconnectAfterSending];
+    [self.xmppRooms removeAllObjects];
 }
 
 

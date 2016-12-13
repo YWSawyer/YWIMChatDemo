@@ -41,6 +41,11 @@
     self.dataSource = [NSMutableArray arrayWithCapacity:2];
     
 }
+- (IBAction)logOut:(id)sender {
+    
+    [[JBXMPPManager sharedInstance] logOut];
+    [self performSegueWithIdentifier:@"Login" sender:self];
+}
 
 #pragma mark -- 更新好友
 
