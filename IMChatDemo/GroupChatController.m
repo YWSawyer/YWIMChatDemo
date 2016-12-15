@@ -173,6 +173,22 @@
     [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
+/**
+ *  返回文件保存的路径
+ *
+ *  @return 文件路径
+ */
+-(NSString*)pathForFile:(NSString*)UUID
+{
+    NSString *path = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"AudioAndImage"];
+    [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+    NSString *result = [path stringByAppendingPathComponent:UUID];
+    
+    return result;
+}
+
+
+
 -(void)handleNewsMessage:(NSNotification *)notification
 {
     NSDictionary *userInfo = [notification userInfo];
@@ -196,7 +212,8 @@
     if ([recordMessage.message.subject isEqualToString:@"voice"]) {
         
         type = @(2);
-        [dataDic setObject:[NSData dataWithContentsOfFile:recordMessage.body] forKey:@"voice"];
+        NSString *voicePath = [self pathForFile:recordMessage.body];
+        [dataDic setObject:[NSData dataWithContentsOfFile:voicePath] forKey:@"voice"];
         [dataDic setObject:@([recordMessage.message attributeIntValueForName:@"VoiceLength"]) forKey:@"strVoiceTime"];
     }else if ([recordMessage.message.subject isEqualToString:@"picture"]){
         type = @(1);

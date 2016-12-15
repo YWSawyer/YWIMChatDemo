@@ -348,11 +348,12 @@ static XMPPMessageArchivingCoreDataStorage *sharedInstance;
     if ([[message subject] isEqualToString:@"voice"]) {
         
         NSData *audioData =  [[NSData alloc] initWithBase64EncodedString:messageBody options:0];
-        NSString *amrFileName=[self pathForFile:[NSString stringWithFormat:@"%@.amr",[xmppStream generateUUID]]];
+        NSString *voiceName = [xmppStream generateUUID];
+        NSString *amrFileName=[self pathForFile:[NSString stringWithFormat:@"%@.amr",voiceName]];
         
         if ([audioData writeToFile:amrFileName atomically:YES]) {
-            NSString *wavPath = [VoiceConverter amrToWav:amrFileName];
-            messageBody = wavPath;
+            [VoiceConverter amrToWav:amrFileName];
+            messageBody = [voiceName stringByAppendingString:@".wav"];
             
             //删除amr文件
             [[NSFileManager defaultManager] removeItemAtPath:amrFileName error:nil];

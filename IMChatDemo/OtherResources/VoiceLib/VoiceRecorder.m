@@ -29,7 +29,7 @@
     return self;
 }
 
-- (void)setRecorder
+- (BOOL)setRecorderSuccessfully
 {
     _recorder = nil;
     NSError *recorderSetupError = nil;
@@ -48,10 +48,12 @@
                                                error:&recorderSetupError];
     if (recorderSetupError) {
         NSLog(@"%@",recorderSetupError);
+        return false;
     }
     _recorder.meteringEnabled = YES;
     _recorder.delegate = self;
     [_recorder prepareToRecord];
+    return true;
 }
 
 - (void)setSesstion
@@ -75,8 +77,10 @@
 - (void)startRecord
 {
     [self setSesstion];
-    [self setRecorder];
-    [_recorder record];
+    if ([self setRecorderSuccessfully]) {
+        [_recorder record];
+    }
+    
 }
 
 

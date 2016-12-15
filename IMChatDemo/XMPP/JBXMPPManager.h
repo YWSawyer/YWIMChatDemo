@@ -21,7 +21,7 @@
 #import "XMPPRoomMemoryStorage.h"
 
 
-#define JBXMPP_HOST @"localhost"
+#define JBXMPP_HOST @"192.168.40.142"
 #define JBXMPP_PORT 5222
 
 #define JBXMPP_DOMAIN @"localhost"
