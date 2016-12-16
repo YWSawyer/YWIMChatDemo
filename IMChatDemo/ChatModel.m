@@ -64,10 +64,11 @@
             
             //对方发的消息，显示在左边
             BOOL fromOthers = recordMessage.message.from;
+            NSString *fromName = [recordMessage.message.type isEqual: @"groupchat"]? recordMessage.message.from.resource:recordMessage.message.from.user;
             
             [dataDic setObject:fromOthers ? @(UUMessageFromOther):@(UUMessageFromMe) forKey:@"from"];
             [dataDic setObject:[recordMessage.timestamp description] forKey:@"strTime"];
-            [dataDic setObject:fromOthers?recordMessage.message.from.resource:[JBXMPPManager sharedInstance].myJID.user forKey:@"strName"];
+            [dataDic setObject:fromOthers?fromName:[JBXMPPManager sharedInstance].myJID.user forKey:@"strName"];
             [dataDic setObject:fromOthers ? otherStr:myStr forKey:@"strIcon"];
             
             //type:voice text picture
@@ -81,7 +82,8 @@
                 
             }else if ([recordMessage.message.subject isEqualToString:@"picture"]){
                 type = @(1);
-                [dataDic setObject:[UIImage imageNamed:recordMessage.body] forKey:@"picture"];
+                NSString *picturePath = [self pathForFile:recordMessage.body];
+                [dataDic setObject:[UIImage imageWithContentsOfFile:picturePath] forKey:@"picture"];
 
             }else{
                 type = @(0);

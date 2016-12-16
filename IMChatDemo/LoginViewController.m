@@ -29,8 +29,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
       [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"DIDLogIn" object:nil];
-    _userName.text = @"weiyuan";
-    _passWord.text = @"12345";
+    NSString *userName = [[NSUserDefaults standardUserDefaults] stringForKey:USER_NAME];
+    NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:PASSWORD];
+    if (userName&&password) {
+        _userName.text = userName;
+        _passWord.text = password;
+    }else{
+        _userName.text = @"weiyuan";
+        _passWord.text = @"12345";
+    }
     
     [DDLog addLogger:[DDTTYLogger sharedInstance] withLogLevel:0xfff]; // TTY = Xcode console
 }
@@ -44,7 +51,8 @@
     NSString *username = _userName.text;
     NSString *password = _passWord.text;//12345
     
-    
+    [[NSUserDefaults standardUserDefaults]setObject:username forKey:USER_NAME];
+    [[NSUserDefaults standardUserDefaults]setObject:password forKey:PASSWORD];
     if (!username || !password) {
         return;
     }

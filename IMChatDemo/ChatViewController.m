@@ -33,7 +33,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    self.title = self.chatJID.user;
     [self addRefreshViews];
     [self loadBaseViewsAndData];
 }
@@ -154,7 +154,7 @@
     
     [dataDic setObject:fromOthers ? @(UUMessageFromOther):@(UUMessageFromMe) forKey:@"from"];
     [dataDic setObject:[recordMessage.timestamp description] forKey:@"strTime"];
-    [dataDic setObject:fromOthers?recordMessage.bareJid.user:[JBXMPPManager sharedInstance].myJID.user forKey:@"strName"];
+    [dataDic setObject:fromOthers?recordMessage.message.from.user:[JBXMPPManager sharedInstance].myJID.user forKey:@"strName"];
     [dataDic setObject:fromOthers ? otherStr:myStr forKey:@"strIcon"];
     
     
@@ -168,7 +168,8 @@
         [dataDic setObject:@([recordMessage.message attributeIntValueForName:@"VoiceLength"]) forKey:@"strVoiceTime"];
     }else if ([recordMessage.message.subject isEqualToString:@"picture"]){
         type = @(1);
-        [dataDic setObject:[UIImage imageNamed:recordMessage.body] forKey:@"picture"];
+        NSString *picturePath = [self pathForFile:recordMessage.body];
+        [dataDic setObject:[UIImage imageWithContentsOfFile:picturePath] forKey:@"picture"];
         
     }else{
         type = @(0);

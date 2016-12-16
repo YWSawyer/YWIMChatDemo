@@ -7,6 +7,10 @@
 #define ACMacros_h
 
 
+#define USER_NAME     @"userName"
+#define PASSWORD      @"password"
+
+
 //** 沙盒路径 ***********************************************************************************
 #define PATH_OF_APP_HOME    NSHomeDirectory()
 #define PATH_OF_TEMP        NSTemporaryDirectory()

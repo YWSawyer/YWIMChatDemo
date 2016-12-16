@@ -52,7 +52,7 @@
 - (void)rosterChange
 {
 //    NSArray *friendsList = [NSArray arrayWithArray:[JBXMPPManager sharedInstance].xmppRosterMemoryStorage.unsortedUsers];
-    self.dataSource[0] = [JBXMPPManager sharedInstance].xmppRosterMemoryStorage.unsortedUsers;
+    self.dataSource[0] = [JBXMPPManager sharedInstance].xmppRosterMemoryStorage.sortedUsersByName;
     [self.tableView reloadData];
 
 }

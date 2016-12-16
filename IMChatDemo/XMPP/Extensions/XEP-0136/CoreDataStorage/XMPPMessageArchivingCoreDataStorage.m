@@ -361,11 +361,11 @@ static XMPPMessageArchivingCoreDataStorage *sharedInstance;
         
         
     }else if([[message subject] isEqualToString:@"picture"]){
-        
-        NSString *imageFileName=[self pathForFile:[NSString stringWithFormat:@"%@.jpg",[xmppStream generateUUID]]];
+        NSString *pictureName = [NSString stringWithFormat:@"%@.jpg",[xmppStream generateUUID]];
+        NSString *imageFileName=[self pathForFile:pictureName];
          NSData *imageData =  [[NSData alloc] initWithBase64EncodedString:messageBody options:0];
         [imageData writeToFile:imageFileName atomically:YES];
-        messageBody = imageFileName;
+        messageBody = pictureName;
     }
     
 	BOOL isComposing = NO;

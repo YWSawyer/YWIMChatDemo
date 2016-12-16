@@ -33,6 +33,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"我家客厅";
     [[JBXMPPManager sharedInstance] setCurrentChattingRoomId:self.roomID];
     self.chatTableView = [[UITableView alloc]init];
     self.chatTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -217,7 +218,8 @@
         [dataDic setObject:@([recordMessage.message attributeIntValueForName:@"VoiceLength"]) forKey:@"strVoiceTime"];
     }else if ([recordMessage.message.subject isEqualToString:@"picture"]){
         type = @(1);
-        [dataDic setObject:[UIImage imageNamed:recordMessage.body] forKey:@"picture"];
+        NSString *picturePath = [self pathForFile:recordMessage.body];
+        [dataDic setObject:[UIImage imageWithContentsOfFile:picturePath] forKey:@"picture"];
         
     }else{
         type = @(0);

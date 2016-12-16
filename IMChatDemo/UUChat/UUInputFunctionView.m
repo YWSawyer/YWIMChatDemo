@@ -49,6 +49,8 @@
         self.btnChangeVoiceState.titleLabel.font = [UIFont systemFontOfSize:12];
         [self.btnChangeVoiceState addTarget:self action:@selector(voiceRecord:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.btnChangeVoiceState];
+        //暂时禁用发送图片
+        [self changeSendBtnWithPhoto:NO];
 
         //语音录入键
         self.btnVoiceRecord = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -65,6 +67,8 @@
         [self.btnVoiceRecord addTarget:self action:@selector(RemindDragExit:) forControlEvents:UIControlEventTouchDragExit];
         [self.btnVoiceRecord addTarget:self action:@selector(RemindDragEnter:) forControlEvents:UIControlEventTouchDragEnter];
         [self addSubview:self.btnVoiceRecord];
+        
+        
         
         //输入框
         self.TextViewInput = [[UITextView alloc]initWithFrame:CGRectMake(45, 5, Main_Screen_Width-2*45, 30)];
@@ -185,6 +189,8 @@
     if (self.isAbleToSendTextMessage) {
         NSString *resultStr = [self.TextViewInput.text stringByReplacingOccurrencesOfString:@"   " withString:@""];
         [self.delegate UUInputFunctionView:self sendMessage:resultStr];
+        //暂时禁用发送图片
+//        [self changeSendBtnWithPhoto:YES];
     }
     else{
         [self.TextViewInput resignFirstResponder];
@@ -203,7 +209,8 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    [self changeSendBtnWithPhoto:textView.text.length>0?NO:YES];
+    //暂时禁用发送图片
+//    [self changeSendBtnWithPhoto:textView.text.length>0?NO:YES];
     placeHold.hidden = textView.text.length>0;
 }
 
