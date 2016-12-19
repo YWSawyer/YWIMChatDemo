@@ -25,6 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.title = [[JBXMPPManager sharedInstance] xmppStream].myJID.user;
     
     //监听好友变化
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rosterChange) name:@"RosterChanged" object:nil];
@@ -52,13 +53,17 @@
 - (void)rosterChange
 {
 //    NSArray *friendsList = [NSArray arrayWithArray:[JBXMPPManager sharedInstance].xmppRosterMemoryStorage.unsortedUsers];
-    self.dataSource[0] = [JBXMPPManager sharedInstance].xmppRosterMemoryStorage.sortedUsersByName;
-    [self.tableView reloadData];
+    NSArray *Friends = [JBXMPPManager sharedInstance].xmppRosterMemoryStorage.sortedUsersByName;
+    if ([Friends count]>0) {
+        self.dataSource[0] = Friends;
+        [self.tableView reloadData];
+    }
+    
 
 }
 
 - (void)getGroupList:(NSNotification *)notification {
-    
+      
     self.dataSource[1] = [notification.userInfo objectForKey:@"roomNames"];
     [self.tableView reloadData];
 }

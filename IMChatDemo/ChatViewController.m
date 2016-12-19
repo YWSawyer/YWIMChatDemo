@@ -46,7 +46,7 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardChange:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardChange:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tableViewScrollToBottom) name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNewsMessage:) name:@"DidReceiveNewMessage" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNewsMessage:) name:DID_RECEIVE_FRIEND_MESSAGE object:nil];
 
 }
 

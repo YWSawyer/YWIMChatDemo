@@ -340,12 +340,13 @@ static XMPPMessageArchivingCoreDataStorage *sharedInstance;
     if ([message.type isEqualToString:@"groupchat"]&&[message.from.full isEqualToString:myRoomID]) {
         return;
     }
+    NSString *NotificationName = [message.type isEqualToString:@"groupchat"]? DID_RECEIVE_GROUP_MESSAGE:DID_RECEIVE_FRIEND_MESSAGE;
     // Message should either have a body, or be a composing notification
 	NSString *messageBody = [[message elementForName:@"body"] stringValue];
     
     //如果是音频或者图片，先将内容保存到本地，然后将路径值设给message body
     
-    if ([[message subject] isEqualToString:@"voice"]) {
+    if ([[message subject] isEqualToString:@"voice"]&& [messageBody length]>0) {
         
         NSData *audioData =  [[NSData alloc] initWithBase64EncodedString:messageBody options:0];
         NSString *voiceName = [xmppStream generateUUID];
@@ -360,7 +361,7 @@ static XMPPMessageArchivingCoreDataStorage *sharedInstance;
         }
         
         
-    }else if([[message subject] isEqualToString:@"picture"]){
+    }else if([[message subject] isEqualToString:@"picture"]&& [messageBody length]>0){
         NSString *pictureName = [NSString stringWithFormat:@"%@.jpg",[xmppStream generateUUID]];
         NSString *imageFileName=[self pathForFile:pictureName];
          NSData *imageData =  [[NSData alloc] initWithBase64EncodedString:messageBody options:0];
@@ -519,7 +520,7 @@ static XMPPMessageArchivingCoreDataStorage *sharedInstance;
         dispatch_async(dispatch_get_main_queue(), ^{
             NSDictionary *messageDic = [NSDictionary dictionaryWithObject:archivedMessage
                                                                    forKey:@"message"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"DidReceiveNewMessage"
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationName
                                                                 object:self
                                                               userInfo:messageDic];    });
 

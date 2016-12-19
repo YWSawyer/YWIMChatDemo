@@ -206,6 +206,12 @@ static JBXMPPManager *_instance;
 - (void)xmppStream:(XMPPStream *)sender didNotAuthenticate:(NSXMLElement *)error
 {
     NSLog(@"%s",__func__);
+    NSXMLElement *xElement = [error elementForName:@"x" xmlns:@"http://jabber.org/protocol/muc#user"];
+    NSXMLElement *statusElement = [xElement elementForName:@"status"];
+    NSString *statusCode = [statusElement attributeStringValueForName:@"code"];
+    if ([statusCode isEqualToString:@"110"]) {
+        [self xmppStreamDidAuthenticate:nil];
+    }
 }
 
 

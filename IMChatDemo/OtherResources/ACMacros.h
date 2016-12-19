@@ -10,6 +10,9 @@
 #define USER_NAME     @"userName"
 #define PASSWORD      @"password"
 
+#define DID_RECEIVE_GROUP_MESSAGE  @"didReceiveGroupMessage"
+#define DID_RECEIVE_FRIEND_MESSAGE @"didReceiveFriendMessage"
+
 
 //** 沙盒路径 ***********************************************************************************
 #define PATH_OF_APP_HOME    NSHomeDirectory()
